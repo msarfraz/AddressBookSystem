@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,6 @@ public class ContactController implements ContactAPI {
     public ResponseEntity<ContactDTO> getContact(Long contactId) {
         ContactDTO contact = contactService.getContact(contactId);
         if(contact != null){
-
             return ResponseEntity.ok(contact) ;
         }
 
@@ -45,7 +45,7 @@ public class ContactController implements ContactAPI {
         var newContact = contactService.saveContact(contact, addressBookId);
         if(newContact == null)
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(newContact);
+        return ResponseEntity.created(URI.create("/"+newContact.getId())).body(newContact);
     }
 
     @Override
