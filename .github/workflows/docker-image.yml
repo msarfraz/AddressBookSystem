@@ -22,7 +22,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
     
-      - uses: actions/checkout@v4    
+         
       - name: Copy artifact
         run: copy /home/runner/work/AddressBookSystem/AddressBookSystem/target/*.jar target/app.jar
       - name: Build the Docker image
@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_KEY }}
         
       - name: Docker build
-      uses: docker/build-push-action@v6
-      with:
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: mansoorsarfraz/reece-address-book-system:latest,mansoorsarfraz/reece-address-book-system:01
+        uses: docker/build-push-action@v6
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: mansoorsarfraz/reece-address-book-system:latest,mansoorsarfraz/reece-address-book-system:01
