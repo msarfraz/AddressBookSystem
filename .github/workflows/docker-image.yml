@@ -23,8 +23,6 @@ jobs:
         run: mvn -B package --file pom.xml
     
          
-      - name: Copy artifact
-        run: copy /home/runner/work/AddressBookSystem/AddressBookSystem/target/*.jar target/app.jar
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag reece-address-book-system:$(date +%s)
       - name: Login to Docker Hub
