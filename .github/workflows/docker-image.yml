@@ -7,7 +7,7 @@ on:
     
 
 jobs:
-  package:
+  package-docker:
   
       runs-on: ubuntu-latest
   
@@ -21,23 +21,19 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-  build-docker:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4    
-    - name: Copy artifact
-      run: copy /home/runner/work/AddressBookSystem/AddressBookSystem/target/*.jar target/app.jar
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag reece-address-book-system:$(date +%s)
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_ACCESS_KEY }}
-      
-    - name: Docker build
+    
+      - uses: actions/checkout@v4    
+      - name: Copy artifact
+        run: copy /home/runner/work/AddressBookSystem/AddressBookSystem/target/*.jar target/app.jar
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag reece-address-book-system:$(date +%s)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_KEY }}
+        
+      - name: Docker build
       uses: docker/build-push-action@v6
       with:
         push: ${{ github.event_name != 'pull_request' }}
